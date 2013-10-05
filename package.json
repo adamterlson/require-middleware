@@ -1,0 +1,34 @@
+{
+  "name": "require-middleware",
+  "version": "0.0.0",
+  "description": "Inject middleware into require calls before they hit the cache, file system, or native modules",
+  "main": "index.js",
+  "scripts": {
+    "test": "./node_modules/mocha/bin/mocha --reporter spec --recursive --ui bdd",
+    "test-coverage": "./node_modules/istanbul/lib/cli.js cover -- ./node_modules/mocha/bin/_mocha --reporter spec --recursive --ui bdd"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/adamterlson/require-middleware.git"
+  },
+  "keywords": [
+    "node",
+    "js",
+    "require",
+    "middleware"
+  ],
+  "author": "Adam Terlson",
+  "license": "BSD",
+  "readmeFilename": "README.md",
+  "gitHead": "57eb107e050826800d58edcdbf041afce4fa717a",
+  "bugs": {
+    "url": "https://github.com/adamterlson/require-middleware/issues"
+  },
+  "devDependencies": {
+    "mocha": "~1.13.0",
+    "chai": "~1.8.0",
+    "sinon": "~1.7.3",
+    "sinon-chai": "~2.4.0",
+    "istanbul": "~0.1.44"
+  }
+}
