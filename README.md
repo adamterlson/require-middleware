@@ -52,16 +52,18 @@ The middleware stack is exposed on `requireMiddleware.stack`.
 ```````javascript
 requireMiddleware.use(function myMiddleware() { });
 // OR
-requireMiddleware.use(function () { }).as('myMiddleware');
+requireMiddleware.use(function () { }).as('someOtherMiddleware');
 ```````
 
 The stack, after registering this middleware would look like:
 
 ```````javascript
 [
-	{ handle: Function myMiddleware, name: 'myMiddleware' }
+	{ handle: [Function myMiddleware], name: 'myMiddleware' },
+	{ handle: [Function someOtherMiddleware], name: 'someOtherMiddleware' }
 ]
 ```````
 
+The `.as()` function is handy if you want to load up common middleware from another location but name it something specific that you control for later manipulation on the stack.  Naming middleware will not impact its functionality in any way.
 
 
