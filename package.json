@@ -1,6 +1,6 @@
 {
   "name": "require-middleware",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Inject middleware into require calls before they hit the cache, file system, or native modules",
   "main": "index.js",
   "scripts": {
