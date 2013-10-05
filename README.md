@@ -21,19 +21,6 @@ npm install [--save/--save-dev] require-middleware
 
 var requireMiddleware = require('require-middleware');
 requireMiddleware.use(function myMiddleware(req, next) {
-	// Do something interesting with `req`
-	// The name of the module being requested is exposed at `req.name`
-	next();
-});
-````````
-
-If next is not called or a result not given, the dependency will be resolved as null.
-
-##Returning your own custom result
-
-```````javascript
-var requireMiddleware = require('require-middleware');
-requireMiddleware.use(function myMiddleware(req, next) {
 	if (req.name === 'something') {
 		// Transparent dependency replacement
 		return require('somethingelse');
@@ -41,6 +28,8 @@ requireMiddleware.use(function myMiddleware(req, next) {
 	next();
 });
 ````````
+
+If next is not called or a result not given, the dependency will be resolved as null.
 
 ## Throwing errors
 
