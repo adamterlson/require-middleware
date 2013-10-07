@@ -3,7 +3,7 @@ Require Middleware
 
 This library will give you the capabilities of middleware in calls to require.  It's super handy for unit testing and dependency injection, but could be used for broader application purposes as well.
 
-This is heavily inspired by, and modeled after, Connect middleware.
+This is heavily inspired by, and modeled after, [Connect middleware](https://github.com/senchalabs/connect).
 
 ##Installation
 
