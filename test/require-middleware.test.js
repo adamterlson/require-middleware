@@ -59,8 +59,8 @@ describe('require-middleware', function() {
 		});
 
 		it('should do nothing with no registered middleware', function () {
-			require('somemodule', function () {
-				requireStub.should.have.been.calledWithExactly('somemodule');
+			require('fs', function () {
+				requireStub.should.have.been.calledWithExactly('fs');
 			});
 		});
 
@@ -69,9 +69,20 @@ describe('require-middleware', function() {
 
 			requireMiddleware.use(myMiddleware);
 
-			require('foo');
+			require('path');
 
-			expect(myMiddleware.getCall(0).args[0]).to.deep.equal({ name: 'foo' });
+			expect(myMiddleware.getCall(0).args[0]).to.deep.equal({ name: 'path', path: 'path' });
+		});
+
+		it('should pass the resolved path to the module along with the name', function () {
+			var myMiddleware = sinon.spy();
+
+			requireMiddleware.use(myMiddleware);
+
+			console.log(require.resolve('./fixture/sampleModule'));
+			require('./fixture/sampleModule');
+
+			expect(myMiddleware.getCall(0).args[0]).to.deep.equal({ name: 'path', path: require.resolve('./fixture/sampleModule') });
 		});
 
 		it('should execute middleware even on the preloaded native module', function () {
@@ -81,7 +92,7 @@ describe('require-middleware', function() {
 
 			require('fs');
 
-			expect(myMiddleware.getCall(0).args[0]).to.deep.equal({ name: 'fs' });
+			expect(myMiddleware.getCall(0).args[0]).to.deep.equal({ name: 'fs', path: 'fs' });
 		});
 
 		it('should execute the entire middleware stack', function () {
@@ -97,7 +108,7 @@ describe('require-middleware', function() {
 			requireMiddleware.use(secondMiddleware);
 			requireMiddleware.use(thirdMiddleware);
 
-			require('foo');
+			require('path');
 
 			thirdMiddleware.should.have.been.called;
 		});
@@ -118,7 +129,7 @@ describe('require-middleware', function() {
 			requireMiddleware.use(firstMiddleware);
 			requireMiddleware.use(secondMiddleware);
 
-			require('foo');
+			require('path');
 
 			expect(firstCalled).to.be.ok;
 			expect(secondCalled).to.be.ok;
@@ -134,7 +145,7 @@ describe('require-middleware', function() {
 			requireMiddleware.use(firstMiddleware);
 			requireMiddleware.use(secondMiddleware);
 
-			var res = require('foo');
+			var res = require('path');
 
 			secondMiddleware.should.not.have.been.called;
 			expect(res).to.not.be.ok;
@@ -149,7 +160,7 @@ describe('require-middleware', function() {
 			requireMiddleware.use(firstMiddleware);
 			requireMiddleware.use(secondMiddleware);
 
-			expect(function () { require('foo'); }).to.throw();
+			expect(function () { require('path'); }).to.throw();
 			secondMiddleware.should.not.have.been.called;
 		});
 
@@ -163,7 +174,7 @@ describe('require-middleware', function() {
 			requireMiddleware.use(firstMiddleware);
 			requireMiddleware.use(secondMiddleware);
 
-			require('foo');
+			require('path');
 
 			expect(secondMiddleware.getCall(0).args[0].name).to.equal('new name');
 		});
@@ -171,12 +182,12 @@ describe('require-middleware', function() {
 		it('should resolve the dependency with the return value, if given', function () {
 			var newModule = {};
 			requireMiddleware.use(function (module, next) {
-				if (module.name === 'foo') {
+				if (module.name === 'path') {
 					return newModule;
 				}
 			});
 
-			var dep = require('foo');
+			var dep = require('path');
 
 			expect(dep).to.equal(newModule);
 			requireStub.should.not.have.been.called;
