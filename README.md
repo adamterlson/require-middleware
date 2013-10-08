@@ -3,7 +3,7 @@ Require Middleware
 
 This library will give you the capabilities of middleware in calls to require.  It's super handy for unit testing and dependency injection, but could be used for broader application purposes as well.
 
-This is heavily inspired by, and modeled after, Connect middleware.
+This is heavily inspired by, and modeled after, [Connect middleware](https://github.com/senchalabs/connect).
 
 ##Installation
 
@@ -27,9 +27,11 @@ requireMiddleware.use(function myMiddleware(req, next) {
 	}
 	next();
 });
+
+var myModule = require('something'); // Gets resolved as if I called `require('somethingelse');
 ````````
 
-If next is not called or a result not given, the dependency will be resolved as null.
+If your module isn't going to block the request for the middleware (by calling `next(err)`) or resolve the dependency by returning the result, calling `next()` will execute the next registered middleware.
 
 ## Throwing errors
 
