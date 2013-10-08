@@ -45,11 +45,11 @@ function myMiddleware(req, next) {
 }
 ```````
 
-# Fiddling with registered middleware
+## Fiddling with registered middleware
 
 The middleware stack is exposed on `requireMiddleware.stack`.
 
-##Naming your middleware
+###Naming your middleware
 
 ```````javascript
 requireMiddleware.use(function myMiddleware() { });
