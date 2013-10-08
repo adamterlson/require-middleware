@@ -71,7 +71,7 @@ describe('require-middleware', function() {
 
 			require('path');
 
-			expect(myMiddleware.getCall(0).args[0]).to.deep.equal({ name: 'path', path: 'path' });
+			expect(myMiddleware.getCall(0).args[0]).to.deep.equal({ request: 'path', path: 'path' });
 		});
 
 		it('should pass the resolved path to the module along with the name', function () {
@@ -79,10 +79,9 @@ describe('require-middleware', function() {
 
 			requireMiddleware.use(myMiddleware);
 
-			console.log(require.resolve('./fixture/sampleModule'));
 			require('./fixture/sampleModule');
 
-			expect(myMiddleware.getCall(0).args[0]).to.deep.equal({ name: 'path', path: require.resolve('./fixture/sampleModule') });
+			expect(myMiddleware.getCall(0).args[0]).to.deep.equal({ request: './fixture/sampleModule', path: require.resolve('./fixture/sampleModule') });
 		});
 
 		it('should execute middleware even on the preloaded native module', function () {
@@ -92,7 +91,7 @@ describe('require-middleware', function() {
 
 			require('fs');
 
-			expect(myMiddleware.getCall(0).args[0]).to.deep.equal({ name: 'fs', path: 'fs' });
+			expect(myMiddleware.getCall(0).args[0]).to.deep.equal({ request: 'fs', path: 'fs' });
 		});
 
 		it('should execute the entire middleware stack', function () {
@@ -166,7 +165,7 @@ describe('require-middleware', function() {
 
 		it('should pass any changes to the module object to the next layer of middleware', function () {
 			var firstMiddleware = function (mod, next) {
-				mod.name = 'new name';
+				mod.request = 'new name';
 				next();
 			};
 			var secondMiddleware = sinon.spy();
@@ -176,13 +175,13 @@ describe('require-middleware', function() {
 
 			require('path');
 
-			expect(secondMiddleware.getCall(0).args[0].name).to.equal('new name');
+			expect(secondMiddleware.getCall(0).args[0].request).to.equal('new name');
 		});
 
 		it('should resolve the dependency with the return value, if given', function () {
 			var newModule = {};
 			requireMiddleware.use(function (module, next) {
-				if (module.name === 'path') {
+				if (module.request === 'path') {
 					return newModule;
 				}
 			});
